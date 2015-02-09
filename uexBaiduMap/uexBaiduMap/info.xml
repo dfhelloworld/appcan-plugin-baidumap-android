@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexBaiduMap" version="3.1.7" build="7">
-		<info>7:修改获取当前位置时返回结果错误问题</info>
+        uexName="uexBaiduMap" version="3.1.9" build="9">
+		<info>9:移动插件包中的定位jar包和so文件至引擎中</info>
+		<build>8:修改在百度地图窗口打开新窗口报错问题</build>
+		<build>7:修改获取当前位置时返回结果错误问题</build>
 		<build>6:增加setUserTrackingMode接口</build>
 		<build>5:修改点击显示线路和添加标注按钮无反应问题</build>
 		<build>4:修改点击标注空指针异常问题</build>
