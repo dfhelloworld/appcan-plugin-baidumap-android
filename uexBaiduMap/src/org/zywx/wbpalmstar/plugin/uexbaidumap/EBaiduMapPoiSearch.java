@@ -1,4 +1,4 @@
-package org.zywx.wbpalmstar.plugin.uexbaidumap;
+﻿package org.zywx.wbpalmstar.plugin.uexbaidumap;
 
 import org.json.JSONArray;
 import org.json.JSONException;

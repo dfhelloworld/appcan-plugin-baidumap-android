@@ -26,9 +26,11 @@ import com.baidu.mapapi.map.BaiduMap;
 public class EUExBaiduMap extends EUExBase implements Parcelable {
 
 	private static boolean isBaiduSdkInit = false;
+	private static LocalActivityManager mgr;
 
 	public EUExBaiduMap(Context context, EBrowserView inParent) {
 		super(context, inParent);
+		mgr = ((ActivityGroup) mContext).getLocalActivityManager();
 		if (isBaiduSdkInit == false) {
 			// 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
 			SDKInitializer.initialize(context.getApplicationContext());
@@ -238,9 +240,9 @@ public class EUExBaiduMap extends EUExBase implements Parcelable {
 	}
 
 	private void handleMessageInMap(Message msg) {
-		LocalActivityManager mgr = ((ActivityGroup) mContext)
-				.getLocalActivityManager();
-		Activity activity = mgr.getActivity(EBaiduMapUtils.MAP_ACTIVITY_ID);
+		String activityId = EBaiduMapUtils.MAP_ACTIVITY_ID
+				+ EUExBaiduMap.this.hashCode();
+		Activity activity = mgr.getActivity(activityId);
 
 		if (activity != null && activity instanceof EBaiduMapBaseActivity) {
 			String[] params = msg.getData().getStringArray(
@@ -430,14 +432,14 @@ public class EUExBaiduMap extends EUExBase implements Parcelable {
 			}
 			intent.putExtra(EBaiduMapUtils.MAP_EXTRA_UEXBASE_OBJ, this);
 
-			LocalActivityManager mgr = ((ActivityGroup) mContext)
-					.getLocalActivityManager();
+			String activityId = EBaiduMapUtils.MAP_ACTIVITY_ID
+					+ EUExBaiduMap.this.hashCode();
 			EBaiduMapBaseActivity eBaiduMapBaseActivity = (EBaiduMapBaseActivity) mgr
-					.getActivity(EBaiduMapUtils.MAP_ACTIVITY_ID);
+					.getActivity(activityId);
 			if (eBaiduMapBaseActivity != null) {
 				return;
 			}
-			Window window = mgr.startActivity(EBaiduMapUtils.MAP_ACTIVITY_ID,
+			Window window = mgr.startActivity(activityId,
 					intent);
 			View decorView = window.getDecorView();
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w,	h);
@@ -453,7 +455,9 @@ public class EUExBaiduMap extends EUExBase implements Parcelable {
 			LocalActivityManager mgr) {
 		View decorView = eBaiduMapBaseActivity.getWindow().getDecorView();
 		mBrwView.removeViewFromCurrentWindow(decorView);
-		mgr.destroyActivity(EBaiduMapUtils.MAP_ACTIVITY_ID, true);
+		String activityId = EBaiduMapUtils.MAP_ACTIVITY_ID
+				+ EUExBaiduMap.this.hashCode();
+		mgr.destroyActivity(activityId, true);
 	}
 
 	private void handleSetMapType(String[] params,
